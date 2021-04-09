@@ -40,6 +40,6 @@
             <button type="submit" class="btn btn-outline-danger" style="size:80%">Delete</button>
         </form>
         </div>
-        <div>@comments(['model' => $film])</div>
+        {{-- <div>@comments(['model' => $film])</div> --}}
 </body>
 </html>
