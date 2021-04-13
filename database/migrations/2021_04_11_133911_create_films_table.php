@@ -24,8 +24,6 @@ class CreateFilmsTable extends Migration
             $table->date('release');
             $table->string('duration');
             $table->string('trailer');
-            $table->double('rating',2,1)->nullable();
-            $table->integer('numofcomments')->nullable();
         });
     }
 
