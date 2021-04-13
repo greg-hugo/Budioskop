@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Film;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\DB;
 
 class FilmController extends Controller
 {
@@ -15,7 +17,12 @@ class FilmController extends Controller
     }
 
     public function film_list(){
-        $films = Film::all();
+        $films = new Film();
+        // dd($films->all());
+        $films = $films->withCount('comments')->orderBy('comments_count', 'DESC')->get()->sortByDesc(function ($film, $key){
+            return $film->comments()->avg('rating');
+        });
+
         return view('index', compact('films'));
     }
 

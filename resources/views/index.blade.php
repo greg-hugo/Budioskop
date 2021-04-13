@@ -23,6 +23,7 @@
           </tr>
         </thead>
         <tbody>
+
         @foreach($films as $film)
           <tr>
             <td>
