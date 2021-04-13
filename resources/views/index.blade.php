@@ -16,6 +16,7 @@
           <tr>
             <th scope="col">Title</th>
             <th scope="col">Number of comment</th>
+            <th scope="col">Rating</th>
             <th scope="col">Description</th>
             <th scope="col">Release Date</th>
             <th scope="col">Duration</th>
@@ -28,6 +29,7 @@
                 <a href="{{route('film.show', $film->id)}}" class="alert-link">{{$film->title}}</a>
             <td>
             <td>{{$film->comments->count()}}</td>
+            <td>{{round($film->comments->avg('rating'), 1)}}</td>
             <td>{{$film->desc}}</td>
             <td>{{$film->release}}</td>
             <td>{{$film->duration}}</td>

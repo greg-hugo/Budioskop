@@ -10,6 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class FilmController extends Controller
 {
+    public function home(){
+        view('home');
+    }
+
     public function film_list(){
         $films = Film::all();
         return view('index', compact('films'));
@@ -100,7 +104,7 @@ class FilmController extends Controller
     public function update(Request $request, $id){
         $film = Film::findOrFail($id);
 
-        $validate = $request->validate([
+        $request->validate([
             'image1' => ['image'],
             'image2' => 'image|nullable',
             'image3' => 'image|nullable',

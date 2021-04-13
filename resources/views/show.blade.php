@@ -44,22 +44,44 @@
         @foreach($film->comments as $comment)
         <div class="container" style="margin:10px">
             <div class="d-flex justify-content-center align-items-center" style="min-height: 5vh">
-                {{($comment->user->name)}}
-                <embed src="{{asset($comment->user->profile)}}" alt="Film Image" height="40px" width="40px" style="border-radius: 20px">
-                {{($comment->updated_at)}}
+                <div>
+                    {{($comment->user->name)}}
+                    <embed src="{{asset($comment->user->profile)}}" alt="Film Image" height="40px" width="40px" style="border-radius: 20px">
+                    {{($comment->updated_at)}}
+                </div>
+                <div class="mb-3">
+                    <label for="" class="form-label">Rating</label>
+                    <input readonly class="form-control" name="rating" type="number" placeholder="{{$comment->rating}}">
+                </div>
                 <label for="" class="form-label">Comment</label>
                 <textarea readonly style="resize: none;" name="comment" id="" cols="30" rows="8">{{($comment->comment)}}</textarea>
 
+                @if ($comment->user_id==Auth::id())
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <form action="{{route('edit.comment', $comment->id)}}"method="GET">
+                        @csrf
+                        <button type="submit" class="btn btn-outline-primary" style="width:100%">Edit</button>
+                    </form>
+                </div>
+                @endif
             </div>
         </div>
         @endforeach
 
+        @if (! App\Comment::where('user_id', Auth::user()->id)->where('film_id', $film->id)->exists())
         <div class="container" style="margin:60px">
             <div class="d-flex justify-content-center align-items-center" style="min-height: 65vh">
             <form class="col-lg6" action="{{route('post.comment')}}" method="POST" enctype="multipart/form-data">
             @csrf
-            {{ (Auth::user()->name) }}
-            <embed src="{{asset(Auth::user()->profile)}}" alt="Film Image" height="40px" width="40px" style="border-radius: 20px">
+            <div>
+                {{ (Auth::user()->name) }}
+                <embed src="{{asset(Auth::user()->profile)}}" alt="Film Image" height="40px" width="40px" style="border-radius: 20px">
+            </div>
+            <div class="mb-3">
+                <label for="" class="form-label">Rating</label>
+                <input class="form-control" name="rating" type="number" min="1" max="10" placeholder="">
+                @error('rating') <span>{{$message}}</span> @enderror
+            </div>
             <div class="mb-3">
                 <input class="form-control" name="film_id" type="hidden" placeholder="" value="{{$film->id}}">
                 <label for="" class="form-label">Comment</label>
@@ -68,13 +90,8 @@
             </div>
             <button type="submit" class="btn btn-outline-dark">Submit</button>
             </form>
-            {{-- <form action="{{route('destroy.comment', $film->comment->id)}}"method="POST">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="btn btn-outline-danger" style="size:80%">Delete</button>
-            </form>
-            </div> --}}
-            </div>
+        </div>
+        @endif
 
 </body>
 </html>
